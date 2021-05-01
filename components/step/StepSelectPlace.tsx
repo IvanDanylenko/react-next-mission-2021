@@ -1,14 +1,14 @@
-import React from "react"
-import dynamic from "next/dynamic"
-import { Typography, Grid } from "@material-ui/core"
+import React from 'react';
+import dynamic from 'next/dynamic';
+import { Typography, Grid } from '@material-ui/core';
 
-const MapWithNoSSR = dynamic(() => import("./Map"), {
+const MapWithNoSSR = dynamic(() => import('../Map'), {
   ssr: false,
-})
+});
 
-const AutocompleteBoxWithNoSSR = dynamic(() => import("./AutocompleteBox"), {
+const AutocompleteBoxWithNoSSR = dynamic(() => import('../AutocompleteBox'), {
   ssr: false,
-})
+});
 
 const StepSelectPlace: React.FC = () => {
   return (
@@ -17,8 +17,8 @@ const StepSelectPlace: React.FC = () => {
         Please, select place on the map.
       </Typography>
       <Typography variant="body1" color="error">
-        Sorry, autocomplete is not gonna work. ERROR: BillingNotEnabledMapError.
-        You must enable Billing on the Google Cloud Project
+        Sorry, autocomplete is not gonna work. ERROR: BillingNotEnabledMapError. You must enable
+        Billing on the Google Cloud Project
       </Typography>
       <Grid container justifyContent="center" sx={{ mb: 3 }}>
         <Grid item>
@@ -27,7 +27,7 @@ const StepSelectPlace: React.FC = () => {
       </Grid>
       <MapWithNoSSR />
     </div>
-  )
-}
+  );
+};
 
-export default StepSelectPlace
+export default StepSelectPlace;

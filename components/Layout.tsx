@@ -1,6 +1,6 @@
-import React from "react"
-import Head from "next/head"
-import Container from "@material-ui/core/Container"
+import React from 'react';
+import Head from 'next/head';
+import Container from '@material-ui/core/Container';
 
 const Layout: React.FC = ({ children }) => {
   return (
@@ -15,7 +15,7 @@ const Layout: React.FC = ({ children }) => {
         {children}
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;

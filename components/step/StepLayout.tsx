@@ -1,34 +1,19 @@
 import React, { FormEventHandler, useEffect } from 'react';
-import Router, { useRouter } from 'next/router';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
-import Layout from '../components/Layout';
-import StepWrapper from '../components/step/StepWrapper';
-import StepSelectTime from '../components/step/StepSelectTime';
-import StepSelectPlace from '../components/step/StepSelectPlace';
-import StepShowSummary from '../components/step/StepShowSummary';
-import { useTypedSelector } from '../hooks/useTypedSelector';
-import { useActions } from '../hooks/useActions';
-
-// ??? not working
-Router.events.on('hashChangeStart', (url) => {
-  console.log('Loading', url);
-});
+import Layout from '../Layout';
+import StepWrapper from './StepWrapper';
+import { useTypedSelector } from '../../hooks/useTypedSelector';
+import { useActions } from '../../hooks/useActions';
 
 // reservation's steps
 const steps: string[] = ['Select time', 'Select place', 'Summary'];
 
-const Home: React.FC = () => {
-  const router = useRouter();
+const StepLayout: React.FC = ({ children }) => {
   const { activeStep } = useTypedSelector((state) => state.step);
-
-  useEffect(() => {
-    // Navigate to different url paths for steps
-    router.push(`#step${activeStep + 1}`, undefined, { shallow: true });
-  }, [activeStep]);
 
   const { setActiveStep } = useActions();
 
@@ -52,9 +37,7 @@ const Home: React.FC = () => {
 
           {/* Steps */}
           <StepWrapper steps={steps} activeStep={activeStep}>
-            {activeStep === 0 && <StepSelectTime />}
-            {activeStep === 1 && <StepSelectPlace />}
-            {activeStep === 2 && <StepShowSummary />}
+            {children}
           </StepWrapper>
           {/* End Steps */}
 
@@ -83,4 +66,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default StepLayout;

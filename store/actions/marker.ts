@@ -1,9 +1,9 @@
-import { MarkerAction, MarkerActionTypes, Marker } from "../../types/marker"
+import { MarkerAction, MarkerActionTypes, Marker } from '../../types/marker';
 
 export const setMarker = (payload: Marker): MarkerAction => {
-  return { type: MarkerActionTypes.SET_MARKER, payload }
-}
+  return { type: MarkerActionTypes.SET_MARKER, payload };
+};
 
 export const setSelectedMarker = (payload: Marker | null): MarkerAction => {
-  return { type: MarkerActionTypes.SET_SELECTED_MARKER, payload }
-}
+  return { type: MarkerActionTypes.SET_SELECTED_MARKER, payload };
+};

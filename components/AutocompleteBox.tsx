@@ -1,103 +1,92 @@
-import * as React from "react"
-import TextField from "@material-ui/core/TextField"
-import Autocomplete from "@material-ui/core/Autocomplete"
-import LocationOnIcon from "@material-ui/icons/LocationOn"
-import Grid from "@material-ui/core/Grid"
-import Typography from "@material-ui/core/Typography"
-import { makeStyles } from "@material-ui/core/styles"
-import parse from "autosuggest-highlight/parse"
-import throttle from "lodash/throttle"
+import * as React from 'react';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/core/Autocomplete';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import parse from 'autosuggest-highlight/parse';
+import throttle from 'lodash/throttle';
 
-const autocompleteService = { current: null }
+const autocompleteService = { current: null };
 
 const useStyles = makeStyles((theme) => ({
   icon: {
     color: theme.palette.text.secondary,
     marginRight: theme.spacing(2),
   },
-}))
+}));
 
 interface MainTextMatchedSubstrings {
-  offset: number
-  length: number
+  offset: number;
+  length: number;
 }
 interface StructuredFormatting {
-  main_text: string
-  secondary_text: string
-  main_text_matched_substrings: readonly MainTextMatchedSubstrings[]
+  main_text: string;
+  secondary_text: string;
+  main_text_matched_substrings: readonly MainTextMatchedSubstrings[];
 }
 interface PlaceType {
-  description: string
-  structured_formatting: StructuredFormatting
+  description: string;
+  structured_formatting: StructuredFormatting;
 }
 
 export default function GoogleMaps() {
-  const classes = useStyles()
-  const [value, setValue] = React.useState<PlaceType | null>(null)
-  const [inputValue, setInputValue] = React.useState("")
-  const [options, setOptions] = React.useState<readonly PlaceType[]>([])
-  const loaded = React.useRef(false)
+  const classes = useStyles();
+  const [value, setValue] = React.useState<PlaceType | null>(null);
+  const [inputValue, setInputValue] = React.useState('');
+  const [options, setOptions] = React.useState<readonly PlaceType[]>([]);
+  const loaded = React.useRef(false);
 
   const fetch = React.useMemo(
     () =>
-      throttle(
-        (
-          request: { input: string },
-          callback: (results?: readonly PlaceType[]) => void
-        ) => {
-          ;(autocompleteService.current as any).getPlacePredictions(
-            request,
-            callback
-          )
-        },
-        200
-      ),
-    []
-  )
+      throttle((request: { input: string }, callback: (results?: readonly PlaceType[]) => void) => {
+        (autocompleteService.current as any).getPlacePredictions(request, callback);
+      }, 200),
+    [],
+  );
 
   React.useEffect(() => {
-    let active = true
+    let active = true;
 
     if (!autocompleteService.current && (window as any).google) {
-      autocompleteService.current = new (window as any).google.maps.places.AutocompleteService()
+      autocompleteService.current = new (window as any).google.maps.places.AutocompleteService();
     }
     if (!autocompleteService.current) {
-      return undefined
+      return undefined;
     }
 
-    if (inputValue === "") {
-      setOptions(value ? [value] : [])
-      return undefined
+    if (inputValue === '') {
+      setOptions(value ? [value] : []);
+      return undefined;
     }
 
     fetch({ input: inputValue }, (results?: readonly PlaceType[]) => {
       if (active) {
-        let newOptions: readonly PlaceType[] = []
+        let newOptions: readonly PlaceType[] = [];
 
         if (value) {
-          newOptions = [value]
+          newOptions = [value];
         }
 
         if (results) {
-          newOptions = [...newOptions, ...results]
+          newOptions = [...newOptions, ...results];
         }
 
-        setOptions(newOptions)
+        setOptions(newOptions);
       }
-    })
+    });
 
     return () => {
-      active = false
-    }
-  }, [value, inputValue, fetch])
+      active = false;
+    };
+  }, [value, inputValue, fetch]);
 
   return (
     <Autocomplete
       id="google-map-demo"
       style={{ width: 300 }}
-      getOptionLabel={(option) =>
-        typeof option === "string" ? option : option.description
-      }
+      getOptionLabel={(option) => (typeof option === 'string' ? option : option.description)}
       filterOptions={(x) => x}
       options={options}
       autoComplete
@@ -105,25 +94,19 @@ export default function GoogleMaps() {
       filterSelectedOptions
       value={value}
       onChange={(event: any, newValue: PlaceType | null) => {
-        setOptions(newValue ? [newValue, ...options] : options)
-        setValue(newValue)
+        setOptions(newValue ? [newValue, ...options] : options);
+        setValue(newValue);
       }}
       onInputChange={(event, newInputValue) => {
-        setInputValue(newInputValue)
+        setInputValue(newInputValue);
       }}
-      renderInput={(params) => (
-        <TextField {...params} label="Add a location" fullWidth />
-      )}
+      renderInput={(params) => <TextField {...params} label="Add a location" fullWidth />}
       renderOption={(props, option) => {
-        const matches =
-          option.structured_formatting.main_text_matched_substrings
+        const matches = option.structured_formatting.main_text_matched_substrings;
         const parts = parse(
           option.structured_formatting.main_text,
-          matches.map((match: any) => [
-            match.offset,
-            match.offset + match.length,
-          ])
-        )
+          matches.map((match: any) => [match.offset, match.offset + match.length]),
+        );
 
         return (
           <li {...props}>
@@ -148,8 +131,8 @@ export default function GoogleMaps() {
               </Grid>
             </Grid>
           </li>
-        )
+        );
       }}
     />
-  )
+  );
 }
