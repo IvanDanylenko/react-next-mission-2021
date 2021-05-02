@@ -2,6 +2,7 @@ import { StepActionTypes, StepAction, StepState } from '../../types/step';
 
 const initialState: StepState = {
   activeStep: 0,
+  steps: ['Select time', 'Select place', 'Summary'],
 };
 
 export const stepReducer = (state = initialState, action: StepAction): StepState => {

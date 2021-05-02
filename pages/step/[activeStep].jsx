@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import StepLayout from '../../components/step/StepLayout';
+import StepContainer from '../../components/step/StepContainer';
 import StepSelectTime from '../../components/step/StepSelectTime';
 import StepSelectPlace from '../../components/step/StepSelectPlace';
 import StepShowSummary from '../../components/step/StepShowSummary';
@@ -19,11 +19,11 @@ const StepPage = () => {
   }, [activeStep]);
 
   return (
-    <StepLayout>
+    <StepContainer>
       {activeStep === 0 && <StepSelectTime />}
       {activeStep === 1 && <StepSelectPlace />}
       {activeStep === 2 && <StepShowSummary />}
-    </StepLayout>
+    </StepContainer>
   );
 };
 

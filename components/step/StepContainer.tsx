@@ -1,19 +1,19 @@
-import React, { FormEventHandler, useEffect } from 'react';
+import React, { FormEventHandler } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
+import Box from '@material-ui/core/Box';
 import { KeyboardArrowLeft, KeyboardArrowRight } from '@material-ui/icons';
 import Layout from '../Layout';
-import StepWrapper from './StepWrapper';
 import { useTypedSelector } from '../../hooks/useTypedSelector';
 import { useActions } from '../../hooks/useActions';
 
-// reservation's steps
-const steps: string[] = ['Select time', 'Select place', 'Summary'];
-
-const StepLayout: React.FC = ({ children }) => {
-  const { activeStep } = useTypedSelector((state) => state.step);
+const StepContainer: React.FC = ({ children }) => {
+  const { activeStep, steps } = useTypedSelector((state) => state.step);
 
   const { setActiveStep } = useActions();
 
@@ -31,14 +31,19 @@ const StepLayout: React.FC = ({ children }) => {
       <Paper elevation={0} sx={{ p: 2 }}>
         {/* FORM, ??? formik */}
         <form onSubmit={submit}>
-          <Typography variant="h4" component="h1" align="center" gutterBottom>
+          <Typography variant="h4" component="h2" align="center" gutterBottom>
             Reservation process
           </Typography>
 
           {/* Steps */}
-          <StepWrapper steps={steps} activeStep={activeStep}>
-            {children}
-          </StepWrapper>
+          <Stepper activeStep={activeStep}>
+            {steps.map((step, index) => (
+              <Step key={index} completed={activeStep > index} onClick={() => setActiveStep(index)}>
+                <StepLabel style={{ cursor: 'pointer' }}>{step}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          <Box sx={{ p: 2 }}>{children}</Box>
           {/* End Steps */}
 
           {/* Buttons: Prev, Next, Submit */}
@@ -66,4 +71,4 @@ const StepLayout: React.FC = ({ children }) => {
   );
 };
 
-export default StepLayout;
+export default StepContainer;

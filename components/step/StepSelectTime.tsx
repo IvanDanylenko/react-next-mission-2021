@@ -21,7 +21,7 @@ const StepSelectTime: React.FC = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Container maxWidth="sm">
-        <Typography variant="body1" sx={{ mb: 3 }}>
+        <Typography variant="body1" align="center" sx={{ mb: 3 }}>
           Please select the time of your booking. The checkin can be only in the next 2 hours. The
           total time of booking must be more than 4 hours.
         </Typography>

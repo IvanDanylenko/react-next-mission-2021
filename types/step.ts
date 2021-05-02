@@ -4,6 +4,7 @@ export enum StepActionTypes {
 
 export interface StepState {
   activeStep: number;
+  steps: string[];
 }
 
 interface SetActiveStep {
